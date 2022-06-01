@@ -4,12 +4,9 @@ extern crate num;
 // use cosmwasm_std::{Decimal256, Uint256};
 
 const A: i128 = 85;
-
 const LEFT: i128 = 0;
 const RIGHT: i128 = 100000000000;
 const PRECISION: i128 = 10;
-
-
 
  use num::abs;
 /* ----------------------------------------------------------- */
@@ -221,8 +218,9 @@ pub fn curve_v1(_offer_pool: i128, _ask_pool: i128, _offer: i128)  -> i128
     let d0: i128 = op + ap;
     let d = compute_d(op, ap, d0);
 
-    //println!("d version 2 = {0}", d);
+    println!("d ask = {}", d);
     let ask_amnt: i128 = get_ask_amount_bisection(op, of, d, ap);
+    println!("ask_amn = {}", ask_amnt);
   //   let ask_f = get_ask_amount(op, of, d, d0);
    // let ask_amnt: i128 = ask_f as i128;
     return _ask_pool - ask_amnt;
@@ -238,10 +236,14 @@ pub fn compute_offer_amount_curve_v1(ask_pool: i128, offer_pool: i128, ask_amoun
     let op = offer_pool as i128;
     let ap = ask_pool as i128;
     let am = ask_amount as i128;
+
+    println!("op = {}, ap = {}, am = {}", op, ap, am);
   
      let d0: i128 = op + ap;
 
     let d = compute_d(op, ap, d0);
+
+    println!("offer d = {}", d);
   
    let offer_amnt: i128 = get_ask_amount_bisection(ap, am, d, op);
   
@@ -273,6 +275,8 @@ pub fn get_ask_amount_bisection(op: i128, of: i128, d:i128, ap: i128) -> i128 {
     
     let mut y1 = get_function_value(d, x1, t1);
     let mut y2 = get_function_value(d, x1, t2);
+
+    println!("get ask amount, y1, y2 = {}, {}", y1, y2);
 
     while y1 * y2 > 0 {
         t1 -= of;
