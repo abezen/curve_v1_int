@@ -3,7 +3,7 @@ extern crate num;
 //use num_integer::Roots;
 // use cosmwasm_std::{Decimal256, Uint256};
 
-const A: i128 = 85;
+const A: i128 = 100;
 const LEFT: i128 = 0;
 const RIGHT: i128 = 100000000000;
 const PRECISION: i128 = 10;
@@ -152,6 +152,13 @@ pub fn get_d_deriv(x: i128, b: i128, q: i128) -> i128 {
     THE PAPER BY MICHAEL EGOROV ON 10 NOVEMBER 2019
 */
 
+
+
+
+
+
+
+
 pub fn compute_d(op: i128, ap: i128, d0: i128) -> i128
 {
     let sum: i128 = op + ap;
@@ -180,7 +187,7 @@ pub fn compute_d(op: i128, ap: i128, d0: i128) -> i128
 
 pub fn get_x_target(x: i128, x1:i128, d: i128) -> i128 {
 
-    println!("get_x_target A, x, x1, d = {}, {}, {}, {}", A, x, x1, d);
+  //  println!("get_x_target A, x, x1, d = {}, {}, {}, {}", A, x, x1, d);
     return (16*A*d*x1*x + d*d*d-16*A*x1*x*(x1+x)-4*x1*x*d)/(4*x1*x);
 }
 
@@ -218,9 +225,9 @@ pub fn curve_v1(_offer_pool: i128, _ask_pool: i128, _offer: i128)  -> i128
     let d0: i128 = op + ap;
     let d = compute_d(op, ap, d0);
 
-    println!("d ask = {}", d);
+   // println!("d ask = {}", d);
     let ask_amnt: i128 = get_ask_amount_bisection(op, of, d, ap);
-    println!("ask_amn = {}", ask_amnt);
+  //   println!("ask_amn = {}", ask_amnt);
   //   let ask_f = get_ask_amount(op, of, d, d0);
    // let ask_amnt: i128 = ask_f as i128;
     return _ask_pool - ask_amnt;
@@ -237,13 +244,13 @@ pub fn compute_offer_amount_curve_v1(ask_pool: i128, offer_pool: i128, ask_amoun
     let ap = ask_pool as i128;
     let am = ask_amount as i128;
 
-    println!("op = {}, ap = {}, am = {}", op, ap, am);
+   // println!("op = {}, ap = {}, am = {}", op, ap, am);
   
      let d0: i128 = op + ap;
 
     let d = compute_d(op, ap, d0);
 
-    println!("offer d = {}", d);
+  //  println!("offer d = {}", d);
   
    let offer_amnt: i128 = get_ask_amount_bisection(ap, am, d, op);
   
@@ -270,13 +277,14 @@ pub fn get_ask_amount_bisection(op: i128, of: i128, d:i128, ap: i128) -> i128 {
 
     let mut t_mid: i128 = 0;
     let mut y_mid;
+    let mut t_mid_last;
     
     
     
     let mut y1 = get_function_value(d, x1, t1);
     let mut y2 = get_function_value(d, x1, t2);
 
-    println!("get ask amount, y1, y2 = {}, {}", y1, y2);
+   //  println!("get ask amount, y1, y2 = {}, {}", y1, y2);
 
     while y1 * y2 > 0 {
         t1 -= of;
@@ -288,7 +296,8 @@ pub fn get_ask_amount_bisection(op: i128, of: i128, d:i128, ap: i128) -> i128 {
     }
 
     
-    while abs(y1 -y2) > 1000 {
+     while abs(y1 -y2) > 1000 {
+        
 
         y1 = get_function_value(d, x1, t1);
         y2 = get_function_value(d, x1, t2);
